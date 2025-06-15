@@ -1,7 +1,7 @@
 name: List PRs to main branch
 on:
   push:  # Manual trigger
-jobs:
+jobs: #test
   list-prs:
     runs-on: ubuntu-latest
     steps:
