@@ -160,4 +160,94 @@ on:
 | `on`, `jobs`, `steps`, `uses`, `run`, `with`, `needs`, `runs-on`, `workflow_dispatch` | Job IDs, Workflow name, Step names, Input values, Action versions |
 
 ---
+📚 GitHub Actions Workflow Triggers Explained
+
+This document explains how to manage workflow triggers in GitHub Actions, covering events, activity types, filters, pull requests from forks, and workflow skipping/canceling.
+
+1. ✅ Available Events
+GitHub Actions supports various event types that can trigger workflows.
+
+Common Events:
+Event	Description
+push	Triggered when commits are pushed to the repository.
+pull_request	Triggered on PR activities like open, synchronize, close.
+schedule	Cron-based scheduled trigger.
+workflow_dispatch	Manual run via GitHub UI.
+
+Example:
+yaml
+Copy
+Edit
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - develop
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight
+2. 🏷️ Activity Types
+You can fine-tune event triggers based on the specific activity type.
+
+Example: Trigger workflow only when a PR is opened or edited:
+yaml
+Copy
+Edit
+on:
+  pull_request:
+    types: [opened, edited]
+Common types:
+
+opened
+
+edited
+
+reopened
+
+synchronize
+
+3. 🎯 Event Filters
+Control when workflows run using branch or file path filters.
+
+Example 1: Run workflow only on the main branch:
+yaml
+Copy
+Edit
+on:
+  push:
+    branches:
+      - main
+Example 2: Run workflow only when files in /src/ change:
+yaml
+Copy
+Edit
+on:
+  push:
+    paths:
+      - 'src/**'
+4. 🔀 Pull Requests & Forks
+Initial approval required for workflows triggered by PRs from forked repositories.
+
+Prevents malicious workflows from untrusted contributors.
+
+Example Behavior:
+A PR from a fork will not run the workflow until manually approved by a repository maintainer.
+
+5. 🚫 Cancelling & Skipping
+❌ Automatic Cancelling:
+If any job fails, dependent jobs may be canceled unless configured otherwise.
+
+✋ Manual Cancelling:
+You can cancel workflows manually from the Actions tab in GitHub.
+
+⏩ Skipping Workflows:
+You can skip workflows intentionally via commit messages:
+
+sql
+Copy
+Edit
+git commit -m "Minor change [skip ci]"
+GitHub Actions will not run any workflow for this commit.
+
 
