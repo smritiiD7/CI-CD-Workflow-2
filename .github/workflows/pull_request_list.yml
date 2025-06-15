@@ -1,0 +1,21 @@
+name: List PRs to main branch
+on:
+  push:  # Manual trigger
+jobs:
+  list-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List PRs targeting 'master'
+        run: |
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               "https://api.github.com/repos/${{ github.repository }}/pulls?base=main" \
+               | jq '.[].html_url'
+  list-prs1:             
+    runs-on: ubuntu-latest
+    steps:
+      - name: List PRs targeting 'dev'
+        run: |
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               "https://api.github.com/repos/${{ github.repository }}/pulls?base=dev" \
+               | jq '.[].html_url'
+    
