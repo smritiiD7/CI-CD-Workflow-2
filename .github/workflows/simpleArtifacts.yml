@@ -1,20 +1,40 @@
-#In job 1 create a file and in job 2 print the file from job 1 and print its contents
-name: file creation and consumption in another job
-on: [workflow_dispatch]
-jobs:
-  create_file:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create a file
-        run: echo "This is a file created in job 1" > myfile.txt
+name: File Creation and Consumption in Another Job
 
-  consume_file:
-    needs: create_file
+on: [workflow_dispatch]
+
+jobs:
+  file_creation_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Download the file from job 1
+      - name: Adding content
+        run: echo "Hello Smriti" >> temp.txt
+
+      - name: Printing the present working directory
+        run: pwd
+
+      - name: Listing the files
+        run: ls -lrth
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: fileContent
+          path: temp.txt
+
+  read_file_content_job:
+    needs: file_creation_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
         uses: actions/download-artifact@v4
-        with:
-          name: myfile.txt
-      - name: Print the contents of the file
-        run: cat myfile.txt
+        with: 
+          name: fileContent
+
+      - name: Printing the present working directory
+        run: pwd
+
+      - name: Listing the files
+        run: ls -lrth
+
+      - name: Print file content
+        run: cat fileContent/temp.txt
