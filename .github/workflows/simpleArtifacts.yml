@@ -1,0 +1,20 @@
+#In job 1 create a file and in job 2 print the file from job 1 and print its contents
+name: file creation and consumption in another job
+on: [workflow_dispatch]
+jobs:
+  create_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a file
+        run: echo "This is a file created in job 1" > myfile.txt
+
+  consume_file:
+    needs: create_file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the file from job 1
+        uses: actions/download-artifact@v4
+        with:
+          name: myfile.txt
+      - name: Print the contents of the file
+        run: cat myfile.txt
