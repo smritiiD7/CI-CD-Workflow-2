@@ -43,4 +43,4 @@ jobs:
         run: find .
 
       - name: Print file content
-        run: cat temp.txt
+        run: cat ./smriti/temp.txt && cat ./ashish/temp1.txt
