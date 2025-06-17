@@ -53,5 +53,5 @@ jobs:
 
       - name: Print file content
         run: |
-          cat fileContentuploadSmriti/temp.txt
-          cat fileContentuploadAshish/temp1.txt
+          cat fileContentuploadSmriti/smriti/temp.txt
+          cat fileContentuploadAshish/ashish/temp1.txt
