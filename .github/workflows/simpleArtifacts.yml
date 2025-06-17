@@ -37,4 +37,4 @@ jobs:
         run: ls -lrth
 
       - name: Print file content
-        run: cat fileContent/temp.txt
+        run: cat temp.txt
