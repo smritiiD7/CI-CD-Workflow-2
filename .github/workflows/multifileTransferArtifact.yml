@@ -22,10 +22,15 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with: 
-          name: fileContent
-          path: |
-                smriti
-                ashish
+          name: fileContentuploadSmriti
+          path: smriti
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: fileContentuploadAshish
+          path:  ashish   
+                   
+    
 
   read_file_content_job:
     needs: file_creation_job
