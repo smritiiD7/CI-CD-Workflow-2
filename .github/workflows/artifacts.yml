@@ -41,7 +41,7 @@ jobs:
             - name: Output contents
               run: ls -lrth
             - name: Deploy
-              run: echo "Deploying"
+              run: echo "Deploying..."
 
              
 
