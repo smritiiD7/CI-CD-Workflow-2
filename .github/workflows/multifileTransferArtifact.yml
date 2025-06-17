@@ -8,38 +8,42 @@ jobs:
     steps:
       - name: Create a directory smriti
         run: mkdir -p smriti
-      - name: Adding content
+      - name: Adding content to smriti
         run: echo "Hello Smriti" >> smriti/temp.txt
 
       - name: Create a directory for ashish
         run: mkdir -p ashish
-      - name: Adding content
+      - name: Adding content to ashish
         run: echo "Hello Ashish" >> ashish/temp1.txt
 
       - name: Listing the folders
         run: find . 
 
-      - name: Upload artifact
+      - name: Upload artifact - Smriti folder
         uses: actions/upload-artifact@v4
         with: 
           name: fileContentuploadSmriti
           path: smriti
-      - name: Upload artifact
+          
+      - name: Upload artifact - Ashish folder
         uses: actions/upload-artifact@v4
         with: 
           name: fileContentuploadAshish
-          path:  ashish   
-                   
-    
+          path: ashish   
 
   read_file_content_job:
     needs: file_creation_job
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifact
+      - name: Download artifact - Smriti folder
         uses: actions/download-artifact@v4
         with: 
-          name: fileContent
+          name: fileContentuploadSmriti
+
+      - name: Download artifact - Ashish folder
+        uses: actions/download-artifact@v4
+        with: 
+          name: fileContentuploadAshish
 
       - name: Printing the present working directory
         run: pwd
@@ -48,4 +52,6 @@ jobs:
         run: find .
 
       - name: Print file content
-        run: cat ./smriti/temp.txt && cat ./ashish/temp1.txt
+        run: |
+          cat fileContentuploadSmriti/temp.txt
+          cat fileContentuploadAshish/temp1.txt
