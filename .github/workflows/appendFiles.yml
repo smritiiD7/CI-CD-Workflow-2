@@ -24,7 +24,7 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                 name: firstInput
-                path: downloadedFirstInput // This is the path where the artifact will be downloaded, and download artifactory expects a directory in the path
+                path: downloadedFirstInput # This downloads the artifact from the previous job
             - name: Append content to file
               run: echo "Hello Ashish" >> downloadedFirstInput/first.txt
             - name: Present working directory
