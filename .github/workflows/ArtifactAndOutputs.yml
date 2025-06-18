@@ -1,0 +1,35 @@
+name: Outputs and Artifacts Example
+on: [workflow_dispatch]
+jobs:
+  producer_job:
+    runs-on: ubuntu-latest
+    outputs:
+      custom_message: ${{ steps.set_output_step.outputs.message }}
+    steps:
+      - name: Create a simple text file
+        run: echo "Hello Smriti!" > greetings.txt
+
+      - name: Set a custom output value
+        id: set_output_step
+        run: echo "message=This is coming from output!" >> $GITHUB_OUTPUT
+
+      - name: Upload the file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: greetingFile
+          path: greetings.txt
+
+  consumer_job:
+    needs: producer_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the output value from producer job
+        run: echo "The message is: + ${{ needs.producer_job.outputs.custom_message }}"
+      - name: Download the artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: greetingFile
+          path: downloadedFile
+
+      - name: Display contents of the downloaded file
+        run: cat downloadedFile/greetings.txt
