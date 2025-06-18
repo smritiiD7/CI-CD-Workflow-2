@@ -1,0 +1,58 @@
+name: Folder Creation and File Transfer Artifact
+
+on: [workflow_dispatch]
+
+jobs:
+  file_creation_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a directory smriti
+        run: mkdir -p smriti
+      - name: Adding content to smriti
+        run: echo "Hello Smriti" >> smriti/temp.txt
+
+      - name: Create a directory for ashish
+        run: mkdir -p ashish
+      - name: Adding content to ashish
+        run: echo "Hello Ashish" >> ashish/temp1.txt
+
+      - name: Listing the folders
+        run: find . 
+
+      - name: Upload artifact - Smriti folder
+        uses: actions/upload-artifact@v4
+        with: 
+          name: fileContentuploadSmriti
+          path: smriti
+          
+      - name: Upload artifact - Ashish folder
+        uses: actions/upload-artifact@v4
+        with: 
+          name: fileContentuploadAshish
+          path: ashish   
+
+  read_file_content_job:
+    needs: file_creation_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact - Smriti folder
+        uses: actions/download-artifact@v4
+        with: 
+          name: fileContentuploadSmriti
+
+      - name: Download artifact - Ashish folder
+        uses: actions/download-artifact@v4
+        with: 
+          name: fileContentuploadAshish
+
+      - name: Printing the present working directory
+        run: pwd
+
+      - name: Listing the files
+        run: find .
+
+      - name: Print file content
+        run: |
+          cat temp.txt
+          cat temp1.txt
+          

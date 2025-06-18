@@ -1,0 +1,40 @@
+name: File Creation and Consumption in Another Job
+
+on: [workflow_dispatch]
+
+jobs:
+  file_creation_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Adding content
+        run: echo "Hello Smriti" >> temp.txt
+
+      - name: Printing the present working directory
+        run: pwd
+
+      - name: Listing the files
+        run: ls -lrth
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: fileContent
+          path: temp.txt
+
+  read_file_content_job:
+    needs: file_creation_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with: 
+          name: fileContent
+
+      - name: Printing the present working directory
+        run: pwd
+
+      - name: Listing the files
+        run: ls -lrth
+
+      - name: Print file content
+        run: cat temp.txt
