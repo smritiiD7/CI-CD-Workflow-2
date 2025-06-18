@@ -51,7 +51,7 @@ jobs:
             - name: List out the files
               run: ls -lrth  
             - name: Print file content
-              run: cat finalFile
+              run: cat finalFile/first.txt
 
 
 
