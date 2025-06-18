@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print the output value from producer job
-        run: echo "The message is: + ${{ needs.producer_job.outputs.custom_message }}"
+        run: echo "The message is:  ${{ needs.producer_job.outputs.custom_message }}"
       - name: Download the artifact
         uses: actions/download-artifact@v4
         with:
