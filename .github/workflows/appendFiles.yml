@@ -1,4 +1,5 @@
-name: append and update files
+#Requirement: Append and update files using GitHub Actions
+name: append and update files 
 on: [ workflow_dispatch ]
 jobs:
     firstInput:
@@ -11,7 +12,7 @@ jobs:
             - name: List out the files
               run: ls -lrth
             - name: Upload artifacts
-              uses: actions/upload-artifacts@v4
+              uses: actions/upload-artifact@v4
               with:
                 name: firstInput
                 path: first.txt
@@ -20,12 +21,12 @@ jobs:
         needs: firstInput
         steps:
             - name: download artifacts
-              uses: actions/download-artifacts@v4
+              uses: actions/download-artifact@v4
               with:
                 name: firstInput
-                path: second.txt
-            - name: Append conent to file
-              run: echo "Hello Ashish" >> second.txt
+                path: downloadedFirstInput // This is the path where the artifact will be downloaded, and download artifactory expects a directory in the path
+            - name: Append content to file
+              run: echo "Hello Ashish" >> downloadedFirstInput/first.txt
             - name: Present working directory
               run: pwd
             - name: List out the files
@@ -34,7 +35,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: appendInput
-                path: second.txt
+                path: downloadedFirstInput/first.txt
     
     readUpdatedfile:
         runs-on: ubuntu-latest
@@ -44,12 +45,13 @@ jobs:
               uses: actions/download-artifacts@v4
               with:
                 name: appendInput
+                path: finalFile
             - name: Present working directory
               run: pwd
             - name: List out the files
               run: ls -lrth  
             - name: Print file content
-              run: cat second.txt
+              run: cat finalFile/downloadedFirstInput/first.txt
 
 
 
