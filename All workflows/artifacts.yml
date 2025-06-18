@@ -1,5 +1,5 @@
 name: Artifacts generation
-on: [ push ]
+on: [push]
 jobs:
     artifacts:
         runs-on: ubuntu-latest
@@ -23,15 +23,14 @@ jobs:
             - name : Install dependencies
               run: npm install
             - name: Build Website
-              run: npm run build 
-            - name: Output all the build files
-              run: ls dist
+              run: npm run build
             - name: Upload artifacts
               uses: actions/upload-artifact@v4
               with: 
                 name: dist-files
-                path: dist/
-
+                path: |
+                  artifactories
+                  artifactories-1.json
                 
     deploy:
         needs: build
@@ -39,12 +38,10 @@ jobs:
         steps:
             - name: Download artifacts
               uses: actions/download-artifact@v4
-              with:
-               name: dist-files
             - name: Output contents
               run: ls -lrth
             - name: Deploy
-              run: echo "Deploying..."
+              run: echo "Deploying"
 
              
 
