@@ -37,12 +37,18 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
+            
+            - name: Restore Node.js modules cache
+              uses: actions/cache@v4
+              with:
+                path: ~/.npm
+                key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+              
   
             - name: Install dependencies
               run: npm install # Install the dependencies
 
-            - name: Build the app
-              run: npm run build # Build the application
+        
 
             - name: Download artifacts
               uses: actions/download-artifact@v4
