@@ -34,6 +34,12 @@ jobs:
         runs-on: ubuntu-latest
         needs: build # This job depends on the build job
         steps:
+            - name: Install dependencies
+              run: npm install # Install the dependencies
+
+            - name: Build the app
+              run: npm run build # Build the application
+              
             - name: Download artifacts
               uses: actions/download-artifact@v4
               with:
