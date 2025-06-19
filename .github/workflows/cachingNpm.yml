@@ -31,15 +31,19 @@ jobs:
                 path: dist # Upload the build files to the artifacts
                 name: build-artifacts # Name of the artifact
     deploy:
+        
         runs-on: ubuntu-latest
         needs: build # This job depends on the build job
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+  
             - name: Install dependencies
               run: npm install # Install the dependencies
 
             - name: Build the app
               run: npm run build # Build the application
-              
+
             - name: Download artifacts
               uses: actions/download-artifact@v4
               with:
