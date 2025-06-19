@@ -36,13 +36,19 @@ jobs:
         needs: build # This job depends on the build job
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@
+            
+            - name: Restore Node.js modules cache
+              uses: actions/cache@v4
+              with:
+                path: ~/.npm
+                key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+              
   
             - name: Install dependencies
               run: npm install # Install the dependencies
 
-            - name: Build the app
-              run: npm run build # Build the application
+        
 
             - name: Download artifacts
               uses: actions/download-artifact@v4
