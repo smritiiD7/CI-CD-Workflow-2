@@ -1,0 +1,46 @@
+name: Node JS CI/CD pipeline with caching and artifacts
+on:
+    [ push ] # Trigger on push events, u can also have workflow_dispatch to manually trigger the workflow
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: '18' # Specify the Node.js version
+
+            - name: Cache Node.js modules
+              uses: actions/cache@v4
+              with:
+                path: ~/.npm # Cache the npm modules, /npm is the default cache path for npm
+                key: ${{ runner.os }}${{ hashFiles('**/package-lock.json') }} # Use package-lock.json to create a unique cache key
+                #hashfiles: | create a hash of the files in the repository, used to create a unique cache key
+
+            - name: Install dependencies
+              run: npm install # Install the dependencies
+            - name: Build the app
+              run: npm run build # Build the application
+
+            - name: Upload the build files
+              uses: actions/upload-artifact@v4
+              with: 
+                path: dist # Upload the build files to the artifacts
+                name: build-artifacts # Name of the artifact
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build # This job depends on the build job
+        steps:
+            - name: Download artifacts
+              uses: actions/download-artifact@v4
+              with:
+                name: build-artifacts # Name of the artifact to download
+
+            - name: Output contents
+              run: ls -lrth # List the contents of the current directory
+
+            - name: Deploy
+              run: echo "Deploying..." # Placeholder for deployment step
