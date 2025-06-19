@@ -36,7 +36,7 @@ jobs:
         needs: build # This job depends on the build job
         steps:
             - name: Checkout code
-              uses: actions/checkout@
+              uses: actions/checkout@v3
             
             - name: Restore Node.js modules cache
               uses: actions/cache@v4
