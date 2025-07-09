@@ -1,4 +1,4 @@
-name: Deploy Project
+name: Slack-Notification-workflow
 on: [ workflow_dispatch ]
 jobs:
   test:
