@@ -1,0 +1,85 @@
+name: Deploy Project
+on: [ workflow_dispatch ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with: 
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+  deploy:
+    needs: test 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Build Project
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying done...."
+
+  notify-slack-job:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()  # ensures notification even if deploy fails
+    steps:
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,job,ref,workflow,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_MESSAGE: |
+            *🔔 GitHub Actions Notification*
+            • *Repository:* `${{ github.repository }}`
+            • *Branch:* `${{ github.ref_name }}`
+            • *Workflow:* `${{ github.workflow }}`
+            • *Job:* `${{ github.job }}`
+            • *Status:* `${{ job.status }}`
+            • *Author:* `${{ github.actor }}`
+            • *Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
